@@ -27,8 +27,8 @@ public class KYCFile {
     private String filename;
     @Column(nullable = false)
     private String filePath;
-    @Enumerated(EnumType.STRING)
-    private DocumentStatus status;
+    // @Enumerated(EnumType.STRING)
+    // private DocumentStatus status;
 
     //@ManyToOne
     //@JoinColumn(name = "user_id", nullable = false)

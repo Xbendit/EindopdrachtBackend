@@ -28,7 +28,7 @@ public class Order {
     @Column(nullable = false)
     private LocalDateTime timestamp;
     @Column(nullable = false)
-    private String Status;
+    private String status;
     // @Column(nullable = false)
     // private Long userID;
 

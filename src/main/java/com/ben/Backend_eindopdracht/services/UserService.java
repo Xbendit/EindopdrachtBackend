@@ -34,7 +34,7 @@ public class UserService {
         User user = userRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("User " + id + "not found"));
         user.setUsername(userOutputDto.getUsername());
         user.setEmail(userOutputDto.getEmail());
-        user.setRole(user.getRole());
+        user.setRole(userOutputDto.getRole());
 
         User savedUser = userRepository.save(user);
 

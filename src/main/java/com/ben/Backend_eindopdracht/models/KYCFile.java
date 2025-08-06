@@ -24,11 +24,11 @@ public class KYCFile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
-    private String filename;
+    private String fileName;
     @Column(nullable = false)
     private String filePath;
     // @Enumerated(EnumType.STRING)
-    // private DocumentStatus status;
+    private String fileStatus;
 
     //@ManyToOne
     //@JoinColumn(name = "user_id", nullable = false)

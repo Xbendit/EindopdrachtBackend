@@ -31,7 +31,7 @@ public class UserService {
     }
 
     public UserOutputDto updateUser(long id, UserOutputDto userOutputDto) {
-        User user = userRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("User " + id + "not found"));
+        User user = userRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("User " + id + " not found"));
         user.setUsername(userOutputDto.getUsername());
         user.setEmail(userOutputDto.getEmail());
         user.setRole(userOutputDto.getRole());

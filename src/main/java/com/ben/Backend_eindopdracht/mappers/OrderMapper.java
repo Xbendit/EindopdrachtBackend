@@ -6,6 +6,9 @@ import com.ben.Backend_eindopdracht.dtos.OrderOutputDto;
 
 import com.ben.Backend_eindopdracht.models.Order;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 public class OrderMapper {
 
@@ -31,5 +34,9 @@ public class OrderMapper {
         p.setTimestamp(order.getTimestamp());
         p.setStatus(order.getStatus());
         return p;
+    }
+
+    public static List<OrderOutputDto> toOutputDtoList(List<Order> orders) {
+        return orders.stream().map(OrderMapper::toOutputDto).collect(Collectors.toList());
     }
 }

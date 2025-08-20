@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.repository.cdi.Eager;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -23,4 +26,15 @@ public class User {
     @Column(nullable = false)
     private String role;
 
+    @OneToOne(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+        private KYCFile kycFile;
+
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Wallet> wallets;
+
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Order> orders;
+
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<SecurityRole> securityRoles;
 }

@@ -30,6 +30,10 @@ public class KYCFile {
     // @Enumerated(EnumType.STRING)
     private String fileStatus;
 
+    @OneToOne(optional = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "id",nullable = false)
+    private User users;
+
     //@ManyToOne
     //@JoinColumn(name = "user_id", nullable = false)
     //private User user;

@@ -31,5 +31,11 @@ public class Order {
     private String status;
     // @Column(nullable = false)
     // private Long userID;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    private User users;
 
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "wallet_id", referencedColumnName = "id", nullable = false)
+    private Wallet wallets;
 }

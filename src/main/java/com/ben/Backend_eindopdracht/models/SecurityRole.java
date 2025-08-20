@@ -16,6 +16,10 @@ public class SecurityRole {
     private Long id;
     @Column(nullable = false)
     private String role;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "id",nullable = false)
+    private User users;
 }
 
 

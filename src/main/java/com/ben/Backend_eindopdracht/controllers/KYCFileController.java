@@ -2,8 +2,13 @@ package com.ben.Backend_eindopdracht.controllers;
 
 import com.ben.Backend_eindopdracht.dtos.KYCFileInputDto;
 import com.ben.Backend_eindopdracht.dtos.KYCFileOutputDto;
+import com.ben.Backend_eindopdracht.exceptions.RecordNotFoundException;
 import com.ben.Backend_eindopdracht.mappers.KYCFileMapper;
+import com.ben.Backend_eindopdracht.mappers.WalletMapper;
 import com.ben.Backend_eindopdracht.models.KYCFile;
+import com.ben.Backend_eindopdracht.models.User;
+import com.ben.Backend_eindopdracht.models.Wallet;
+import com.ben.Backend_eindopdracht.repositories.UserRepository;
 import com.ben.Backend_eindopdracht.services.KYCFileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,8 +21,27 @@ import org.springframework.web.bind.annotation.*;
 public class KYCFileController {
 
     private final KYCFileService kycFileService;
+    private final UserRepository userRepository;
 
-    @PostMapping
+    @PostMapping("/{userId}/assign")
+    public ResponseEntity<KYCFileOutputDto> createKYCFile(@PathVariable("userId") Long userId, @RequestBody KYCFileInputDto input){
+
+        // Haal User op
+        User user = userRepository.findById(userId).orElseThrow(()-> new RecordNotFoundException("User not found"));
+
+        //KYCFile toSave = KYCFileMapper.toEntity(input);
+        KYCFile kycFile = KYCFileMapper.toEntity(input);
+
+        //Koppel user
+        kycFile.setUsers(user);
+
+        KYCFile saved = kycFileService.save(kycFile);
+
+        KYCFileOutputDto output = KYCFileMapper.toOutputDto(saved);
+        return ResponseEntity.status(HttpStatus.CREATED).body(output);
+    }
+
+    /*@PostMapping
     public ResponseEntity<KYCFileOutputDto> createKYCFile(@RequestBody KYCFileInputDto input){
 
         KYCFile toSave = KYCFileMapper.toEntity(input);
@@ -26,7 +50,7 @@ public class KYCFileController {
 
         KYCFileOutputDto output = KYCFileMapper.toOutputDto(saved);
         return ResponseEntity.status(HttpStatus.CREATED).body(output);
-    }
+    }*/
 
     @GetMapping("/{id}")
     public ResponseEntity<KYCFileOutputDto> getKYCFileById(@PathVariable Long id){

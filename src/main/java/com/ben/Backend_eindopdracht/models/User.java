@@ -23,8 +23,8 @@ public class User {
     private String email;
     @Column(nullable = false)
     private String password;
-    @Column(nullable = false)
-    private String role;
+    /*@Column(nullable = false)
+    private String role;*/
 
     @OneToOne(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
         private KYCFile kycFile;

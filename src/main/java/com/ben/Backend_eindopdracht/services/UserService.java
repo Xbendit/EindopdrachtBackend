@@ -5,12 +5,16 @@ import com.ben.Backend_eindopdracht.exceptions.RecordNotFoundException;
 import com.ben.Backend_eindopdracht.mappers.UserMapper;
 import com.ben.Backend_eindopdracht.models.User;
 import com.ben.Backend_eindopdracht.repositories.UserRepository;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+///  Added implements...
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     // Dependency Injection
     private final UserRepository userRepository;
@@ -34,7 +38,7 @@ public class UserService {
         User user = userRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("User " + id + " not found"));
         user.setUsername(userOutputDto.getUsername());
         user.setEmail(userOutputDto.getEmail());
-        user.setRole(userOutputDto.getRole());
+        /*user.setRole(userOutputDto.getRole());*/
 
         User savedUser = userRepository.save(user);
 
@@ -47,5 +51,16 @@ public class UserService {
         }
         userRepository.deleteById(id);
         return "User "+ id + " successfully deleted";
+    }
+    /// /// Added
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Gebruiker niet gevonden: " + username));
+
+        return org.springframework.security.core.userdetails.User.builder()
+                .username(user.getUsername())
+                .password(user.getPassword())
+                .build();
     }
 }

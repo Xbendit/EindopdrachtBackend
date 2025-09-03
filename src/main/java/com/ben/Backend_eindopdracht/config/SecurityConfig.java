@@ -26,25 +26,28 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final UserService userDetailsService;
+    private final PasswordEncoder passwordEncoder;
 
-    public SecurityConfig(UserService userDetailsService) {
+    public SecurityConfig(UserService userDetailsService, PasswordEncoder passwordEncoder) {
         this.userDetailsService = userDetailsService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtService jwtService) throws Exception {
 
         http
-                .csrf(csrf -> csrf.disable())
-                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+
                 .httpBasic(b -> b.disable()) // zet Basic uit als je JWT gaat gebruiken
                 .authorizeHttpRequests(auth -> auth
                         // ─── Publiek (geen auth)
                         .requestMatchers(
                                 "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/api-docs/**",
                                 "/actuator/health", "/actuator/info",
-                                "/auth/login"              // jouw login endpoint (JWT)
+                                "/login"              // jouw login endpoint (JWT)
                         ).permitAll()
+                        .requestMatchers(HttpMethod.POST, "/login").permitAll()
                         // registratie nieuwe user:
                         .requestMatchers(HttpMethod.POST, "/users").permitAll()
 
@@ -55,7 +58,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
 
                         // ─── SecurityRoles (toegangsbeheer)
-                        .requestMatchers("/securityroles/**").hasRole("ADMIN")
+                        /*.requestMatchers("/securityroles/**").hasRole("ADMIN")*/
+                        .requestMatchers("/securityroles/**").permitAll()
 
 
                         // ─── KYC (inzage/valideren)
@@ -87,26 +91,30 @@ public class SecurityConfig {
 
                         // ─── Overig: ingelogd
                         .anyRequest().authenticated()
-                );
+                )
+                .addFilterBefore(new JwtRequestFilter(jwtService), UsernamePasswordAuthenticationFilter.class)
+                .csrf(csrf -> csrf.disable())
+                .cors(cors -> {
+                })
+                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+        ;
 
         return http.build();
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
-    @Bean
+
+   /* @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
-    }
+    }*/
 
-    /*@Bean
+    @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
         var builder = http.getSharedObject(AuthenticationManagerBuilder.class);
-        builder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+        builder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
 
         return builder.build();
-    }*/
+    }
 }

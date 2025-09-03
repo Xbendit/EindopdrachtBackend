@@ -31,7 +31,7 @@ public class LoginController {
     public ResponseEntity<String> signIn(@RequestBody UserLoginRequestDTO userLoginRequestDTO
     ) {
         UsernamePasswordAuthenticationToken up =
-                new UsernamePasswordAuthenticationToken(userLoginRequestDTO.getUserName(), userLoginRequestDTO.getPassword());
+                new UsernamePasswordAuthenticationToken(userLoginRequestDTO.getUsername(), userLoginRequestDTO.getPassword());
 
         try {
             Authentication auth = authManager.authenticate(up);

@@ -1,12 +1,12 @@
-/*-- Maak eerst Users
-INSERT INTO users (id, username, email, password)
+-- Maak eerst Users
+INSERT INTO users (username, email, password)
 VALUES
-    (1, 'alice', 'alice@example.com', 'test123'),
-    (2, 'bob', 'bob@example.com', 'test123'),
-    (3, 'charlie', 'charlie@example.com', 'test123');
+    ('alice', 'alice@example.com', '$2a$10$5dcsUKzwg0EecyR1C3XIv.Vn30.W.P86fTQm0lG0FXPru7wz7w1Pe'),
+    ('bob', 'bob@example.com', '$2a$10$.Xpj2mGy/EbTPBc.jMAENO4D0Qg9BqAy6/xzBAEnPrQSHNOn1HpRq'),
+    ('charlie', 'charlie@example.com', '$2a$10$Qfq4UbzW45dFDQitYmVhw.de6doth82qrYiFGaRwtqxbf/.Hbco4y');
 
 -- Security Roles
-INSERT INTO security_roles (id, role, user_id)
+INSERT INTO securityroles (id, role, user_id)
 VALUES
     (1, 'TRADER', 1),
     (2, 'ADMIN', 2),
@@ -27,8 +27,8 @@ VALUES
     (3, 'BUY', 1, 29000, 'BTC', '2025-08-23T14:45:00', 'CANCELLED', 3, 3);
 
 -- KYC Files (gekoppeld aan users)
-INSERT INTO kyc_files (id, file_name, file_path, file_status, user_id)
+INSERT INTO kycfile (id, file_name, file_path, file_status, user_id)
 VALUES
     (1, 'alice_id.pdf', '/files/alice_id.pdf', 'APPROVED', 1),
     (2, 'bob_passport.pdf', '/files/bob_passport.pdf', 'PENDING', 2),
-    (3, 'charlie_id.pdf', '/files/charlie_id.pdf', 'REJECTED', 3);*/
+    (3, 'charlie_id.pdf', '/files/charlie_id.pdf', 'REJECTED', 3);

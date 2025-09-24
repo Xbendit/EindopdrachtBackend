@@ -3,14 +3,17 @@ package com.ben.Backend_eindopdracht.services;
 import com.ben.Backend_eindopdracht.dtos.UserOutputDto;
 import com.ben.Backend_eindopdracht.exceptions.RecordNotFoundException;
 import com.ben.Backend_eindopdracht.mappers.UserMapper;
+import com.ben.Backend_eindopdracht.models.SecurityRole;
 import com.ben.Backend_eindopdracht.models.User;
 import com.ben.Backend_eindopdracht.repositories.UserRepository;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 ///  Added implements...
@@ -62,9 +65,15 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Gebruiker niet gevonden: " + username));
 
+        ArrayList<SimpleGrantedAuthority> authorityArrayList = new ArrayList<>();
+        for (SecurityRole role: user.getSecurityRoles()){
+            authorityArrayList.add(new SimpleGrantedAuthority(role.getRole()));
+        }
+
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getUsername())
                 .password(user.getPassword())
+                .authorities(authorityArrayList)
                 .build();
     }
 }

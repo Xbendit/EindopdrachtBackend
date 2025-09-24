@@ -50,6 +50,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
                         // registratie nieuwe user:
                         .requestMatchers(HttpMethod.POST, "/users").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/auth").permitAll()
 
                         // ─── Users
                         .requestMatchers(HttpMethod.GET, "/users/**").permitAll()

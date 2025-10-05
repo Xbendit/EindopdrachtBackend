@@ -80,6 +80,12 @@ public class JwtService {
         return createToken(claims, userDetails.getUsername(), milliSeconds); //time in milliseconds
     }
 
+    public List<String> extractRoleNames(String token) {
+        var claims = extractAllClaims(token);                // jouw bestaande methode
+        List<String> roles = claims.get("roles", List.class);
+        return roles == null ? List.of() : roles;
+    }
+
     private String createToken(Map<String, Object> claims, String
             subject, long milliSeconds) {
 

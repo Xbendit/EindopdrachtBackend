@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserInputDto {
+public class WalletInputDto {
 
-    private String username;
-    private String email;
-    private String password;
-   /* private String role;*/
+    private String walletAdress;
+    private String cryptoCurrency;
+    private Long balance;
+    // private Long userId;
 }

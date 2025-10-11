@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserInputDto {
+public class KYCFileOutputDto {
 
-    private String username;
-    private String email;
-    private String password;
-   /* private String role;*/
+    private Long id;
+    private String fileName;
+    private String filePath;
+    private String fileStatus;
 }

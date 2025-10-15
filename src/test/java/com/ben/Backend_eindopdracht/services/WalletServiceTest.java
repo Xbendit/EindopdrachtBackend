@@ -30,7 +30,7 @@ class WalletServiceTest {
     @Mock
     private WalletRepository walletRepository;
 
-    /*// Niet gebruikt door de service, maar constructor vereist ‘m:
+    /*
     @Mock
     private UserRepository userRepository;*/
 
@@ -51,6 +51,7 @@ class WalletServiceTest {
     @Test
     @DisplayName("save(): saves wallet to repository")
     void save() {
+        //ARRANGE
         Wallet toSave = new Wallet();
         toSave.setWalletAdress("addr-new");
         toSave.setCryptoCurrency("ETH");
@@ -61,9 +62,9 @@ class WalletServiceTest {
             w.setId(42L);
             return w;
         });
-
+        //ACT
         Wallet saved = walletService.save(toSave);
-
+        //ASSERT
         assertThat(saved.getId()).isEqualTo(42L);
         verify(walletRepository).save(argThat(w ->
                 w.getWalletAdress().equals("addr-new") &&
@@ -74,10 +75,11 @@ class WalletServiceTest {
     @Test
     @DisplayName("findAll(): calls all wallets")
     void findAll() {
+        //ARRANGE
         when(walletRepository.findAll()).thenReturn(List.of(existing));
-
+        //ACT
         List<Wallet> result = walletService.findAll();
-
+        //ASSERT
         assertThat(result).hasSize(1);
         assertThat(result.get(0).getWalletAdress()).isEqualTo("addr-1");
         verify(walletRepository).findAll();
@@ -86,10 +88,11 @@ class WalletServiceTest {
     @Test
     @DisplayName("getWallet(): find wallet by id")
     void getWallet() {
+        //ARRANGE
         when(walletRepository.findById(1L)).thenReturn(Optional.of(existing));
-
+        //ACT
         Wallet result = walletService.getWallet(1L);
-
+        //ASSERT
         assertThat(result.getId()).isEqualTo(1L);
         verify(walletRepository).findById(1L);
     }
@@ -97,8 +100,9 @@ class WalletServiceTest {
     @Test
     @DisplayName("getWallet(): calls RecordNotFoundException by unknown id")
     void getWallet_notFound() {
+        //ARRANGE
         when(walletRepository.findById(99L)).thenReturn(Optional.empty());
-
+        //ACT + ASSERT
         assertThatThrownBy(() -> walletService.getWallet(99L))
                 .isInstanceOf(RecordNotFoundException.class)
                 .hasMessageContaining("Wallet 99 not found");
@@ -109,6 +113,7 @@ class WalletServiceTest {
     @Test
     @DisplayName("updateWallet(): update fields and saves in map to OutputDTO")
     void updateWallet() {
+        //ARRANGE
         when(walletRepository.findById(1L)).thenReturn(Optional.of(existing));
         when(walletRepository.save(any(Wallet.class))).thenAnswer(inv -> inv.getArgument(0));
 
@@ -117,9 +122,9 @@ class WalletServiceTest {
         input.setWalletAdress("addr-updated");
         input.setCryptoCurrency("ETH");
         input.setBalance(2_000L);
-
+        //ACT
         WalletOutputDto out = walletService.updateWallet(1L, input);
-
+        //ASSERT
         assertThat(out.getId()).isEqualTo(1L);
         assertThat(out.getWalletAdress()).isEqualTo("addr-updated");
         assertThat(out.getCryptoCurrency()).isEqualTo("ETH");
@@ -136,13 +141,14 @@ class WalletServiceTest {
     @Test
     @DisplayName("updateWallet(): calls RecordNotFoundException by unkown id")
     void updateWallet_notFound() {
+        //ARRANGE
         when(walletRepository.findById(123L)).thenReturn(Optional.empty());
 
         WalletOutputDto input = new WalletOutputDto();
         input.setWalletAdress("x");
         input.setCryptoCurrency("BTC");
         input.setBalance(10L);
-
+        // ACT + ASSERT
         assertThatThrownBy(() -> walletService.updateWallet(123L, input))
                 .isInstanceOf(RecordNotFoundException.class)
                 .hasMessageContaining("Wallet 123 not found");
@@ -154,11 +160,12 @@ class WalletServiceTest {
     @Test
     @DisplayName("deleteWallet(): deletes wallet by id")
     void deleteWallet() {
+        //ARRANGE
         when(walletRepository.findById(1L)).thenReturn(Optional.of(existing));
         doNothing().when(walletRepository).deleteById(1L);
-
+        //ACT
         String msg = walletService.deleteWallet(1L);
-
+        //ASSERT
         assertThat(msg).contains("Wallet 1 successfully deleted");
         verify(walletRepository).findById(1L);
         verify(walletRepository).deleteById(1L);
@@ -167,8 +174,9 @@ class WalletServiceTest {
     @Test
     @DisplayName("deleteWallet(): calls RecordNotFoundException by unknown")
     void deleteWallet_notFound() {
+        //ARRANGE
         when(walletRepository.findById(77L)).thenReturn(Optional.empty());
-
+        //ACT + ASSERT
         assertThatThrownBy(() -> walletService.deleteWallet(77L))
                 .isInstanceOf(RecordNotFoundException.class)
                 .hasMessageContaining("Wallet 77 not found");

@@ -58,7 +58,7 @@ class UserServiceTest {
     @Test
     @DisplayName("save(): encode password en repository.save call")
     void save_encodesPassword_andPersists() {
-        // arrange
+        // ARRANGE
         User toSave = new User();
         toSave.setUsername("bob");
         toSave.setEmail("bob@example.com");
@@ -72,9 +72,9 @@ class UserServiceTest {
             return u;
         });
 
-
+        //ACT
         User saved = userService.save(toSave);
-
+        //ASSERT
         assertThat(saved.getId()).isEqualTo(42L);
         assertThat(saved.getPassword()).isEqualTo("bcrypt-secret");
 
@@ -88,10 +88,11 @@ class UserServiceTest {
     @Test
     @DisplayName("findAll(): gives list of users")
     void findAll_returnsUsers() {
+        // ARRANGE
         when(userRepository.findAll()).thenReturn(List.of(existingUser));
-        
+        //ACT
         List<User> result = userService.findAll();
-        
+        //ASSERT
         assertThat(result).hasSize(1);
         assertThat(result.get(0).getUsername()).isEqualTo("alice");
         verify(userRepository).findAll();
@@ -100,10 +101,11 @@ class UserServiceTest {
     @Test
     @DisplayName("getUser():find user by id")
     void getUser_found() {
+        // ARRANGE
         when(userRepository.findById(1L)).thenReturn(Optional.of(existingUser));
-
+        //ACT
         User result = userService.getUser(1L);
-
+        //ASSERT
         assertThat(result.getEmail()).isEqualTo("alice@example.com");
         verify(userRepository).findById(1L);
 
@@ -112,8 +114,9 @@ class UserServiceTest {
     @Test
     @DisplayName("getUser(): calls RecordNotFoundException when there is no id")
     void getUser_notFound_throws() {
+        // ARRANGE
         when(userRepository.findById(99L)).thenReturn(Optional.empty());
-
+        //ACT + ASSERT
         assertThatThrownBy(() -> userService.getUser(99L))
                 .isInstanceOf(RecordNotFoundException.class)
                 .hasMessageContaining("User 99 not found");
@@ -124,15 +127,16 @@ class UserServiceTest {
     @Test
     @DisplayName("updateUser(): update username and email and maps to output DTO")
     void updateUser_succes() {
+        // ARRANGE
         when(userRepository.findById(1L)).thenReturn(Optional.of(existingUser));
         when(userRepository.save(ArgumentMatchers.any(User.class))).thenAnswer(inv -> inv.getArgument(0));
 
         UserOutputDto input = new UserOutputDto();
         input.setUsername("alice-new");
         input.setEmail("alice-new@example.com");
-
+        //ACT
         UserOutputDto out = userService.updateUser(1L, input);
-
+        //ASSERT
         assertThat(out.getId()).isEqualTo(existingUser.getId());
         assertThat(out.getUsername()).isEqualTo("alice-new");
         assertThat(out.getEmail()).isEqualTo("alice-new@example.com");
@@ -147,12 +151,13 @@ class UserServiceTest {
     @Test
     @DisplayName("updateUser(): calls RecordNotFoundException when there is no user")
     void updateUser_notFound_throws() {
+        // ARRANGE
         when(userRepository.findById(123L)).thenReturn(Optional.empty());
 
         UserOutputDto dto = new UserOutputDto();
         dto.setUsername("x");
         dto.setEmail("x@example.com");
-
+        //ACT
         assertThatThrownBy(() -> userService.updateUser(123L, dto))
                 .isInstanceOf(RecordNotFoundException.class)
                 .hasMessageContaining("User 123 not found");
@@ -165,10 +170,11 @@ class UserServiceTest {
         @Test
         @DisplayName("deleteUser(): delete when id exists")
         void deleteUser_success() {
+            // ARRANGE
             when(userRepository.existsById(1L)).thenReturn(true);
-
+            //ACT
             String msg = userService.deleteUser(1L);
-
+            //ASSERT
             assertThat(msg).contains("User 1 successfully deleted");
             verify(userRepository).existsById(1L);
             verify(userRepository).deleteById(1L);
@@ -177,8 +183,9 @@ class UserServiceTest {
         @Test
         @DisplayName("deleteUser(): calls RecordNotFoundException when id not exists")
         void deleteUser_notFound_throws() {
+            // ARRANGE
             when(userRepository.existsById(77L)).thenReturn(false);
-
+            //ACT + ASSERT
             assertThatThrownBy(() -> userService.deleteUser(77L))
                     .isInstanceOf(RecordNotFoundException.class)
                     .hasMessageContaining("User 77 not found!");
@@ -192,11 +199,12 @@ class UserServiceTest {
         @Test
         @DisplayName("loadUserByUsername(): calls UserDetails with authorities from SecurityRoles")
         void loadUserByUsername_success() {
+            // ARRANGE
             when(userRepository.findByUsername("alice"))
                     .thenReturn(Optional.of(existingUser));
-
+            //ACT
             UserDetails ud = userService.loadUserByUsername("alice");
-
+            //ASSERT
             assertThat(ud.getUsername()).isEqualTo("alice");
             assertThat(ud.getPassword()).isEqualTo("plain");
 
@@ -210,9 +218,10 @@ class UserServiceTest {
         @Test
         @DisplayName("loadUserByUsername(): calls UsernameNotFoundException when user does not exists")
         void loadUserByUsername_notFound_throws() {
+            // ARRANGE
             when(userRepository.findByUsername("missing"))
                     .thenReturn(Optional.empty());
-
+            //ACT + ASSERT
             assertThatThrownBy(() -> userService.loadUserByUsername("missing"))
                     .isInstanceOf(UsernameNotFoundException.class)
                     .hasMessageContaining("missing");

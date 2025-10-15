@@ -1,3 +1,4 @@
+/*
 package com.ben.Backend_eindopdracht;
 
 
@@ -15,3 +16,4 @@ public class mainBackendEindopdracht {
         SpringApplication.run(BackendEindopdrachtApplication.class, args);
     }
 }
+*/

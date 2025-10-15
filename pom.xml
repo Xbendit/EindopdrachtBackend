@@ -110,6 +110,12 @@
 			<version>3.25.3</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-inline</artifactId>
+			<version>5.2.0</version>
+			<scope>test</scope>
+		</dependency>
 
 	</dependencies>
 
@@ -140,6 +146,23 @@
 					</excludes>
 				</configuration>
 			</plugin>
+
+
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<version>3.2.5</version>
+						<configuration>
+							<!-- pad mag door Maven worden geresolved; dit werkt doorgaans prima -->
+							<argLine>-javaagent:${settings.localRepository}/net/bytebuddy/byte-buddy-agent/1.17.6/byte-buddy-agent-1.17.6.jar</argLine>
+						</configuration>
+					</plugin>
+
+
+
+
+
 		</plugins>
 	</build>
 

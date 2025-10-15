@@ -48,18 +48,6 @@ public class WalletController {
         return ResponseEntity.status(HttpStatus.CREATED).body(output);
     }
 
-
-    /*@PostMapping
-    public ResponseEntity<WalletOutputDto> createWallet(@RequestBody WalletInputDto input) {
-        // DTO > Entity
-        Wallet toSave = WalletMapper.toEntity(input);
-        // Opslaan in database
-        Wallet saved = walletService.save(toSave);
-        // Entity > Output DTO
-        WalletOutputDto output = WalletMapper.toOutputDto(saved);
-        return ResponseEntity.status(HttpStatus.CREATED).body(output);
-    }*/
-
     @GetMapping
     public ResponseEntity<List<WalletOutputDto>> getAllWallets(){
         List<Wallet> wallets = walletService.findAll();

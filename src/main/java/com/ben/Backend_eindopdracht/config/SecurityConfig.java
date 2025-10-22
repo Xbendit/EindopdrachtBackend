@@ -70,7 +70,7 @@ public class SecurityConfig {
 
                         // ─── KYC (inzage/valideren)
                         // All can upload KYC documents
-                        .requestMatchers(HttpMethod.POST, "/kycfiles").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/kycfiles/*/upload").permitAll()
                         // Only CO can view all kyc requests
                         .requestMatchers(HttpMethod.GET, "/kycfiles/**").hasRole("COMPLIANCE_OFFICER")
                         // Only CO can update status and kyc request

@@ -27,8 +27,8 @@ VALUES
     ('BUY', 1, 29000, 'BTC', '2025-08-23T14:45:00', 'CANCELLED', 3, 3);
 
 -- KYC Files (gekoppeld aan users)
-INSERT INTO kycfile (file_name, file_path, file_status, user_id)
+INSERT INTO kycfile (file_name, file_path, file_status, user_id, file_size_bytes)
 VALUES
-    ('alice_id.pdf', '/files/alice_id.pdf', 'APPROVED', 1),
-    ('bob_passport.pdf', '/files/bob_passport.pdf', 'PENDING', 2),
-    ('charlie_id.pdf', '/files/charlie_id.pdf', 'REJECTED', 3);
+    ('alice_id.pdf', '/files/alice_id.pdf', 'APPROVED', 1,12345),
+    ('bob_passport.pdf', '/files/bob_passport.pdf', 'PENDING', 2,23456),
+    ('charlie_id.pdf', '/files/charlie_id.pdf', 'REJECTED', 3,34567);

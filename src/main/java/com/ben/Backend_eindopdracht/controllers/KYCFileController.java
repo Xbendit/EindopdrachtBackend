@@ -12,8 +12,10 @@ import com.ben.Backend_eindopdracht.repositories.UserRepository;
 import com.ben.Backend_eindopdracht.services.KYCFileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/kycfiles")
@@ -23,7 +25,18 @@ public class KYCFileController {
     private final KYCFileService kycFileService;
     private final UserRepository userRepository;
 
-    @PostMapping("/{userId}/assign")
+    @PostMapping(value = "/{userId}/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<KYCFileOutputDto> upload(
+            @PathVariable Long userId,
+            @RequestParam("file") MultipartFile file) throws Exception {
+
+        KYCFileOutputDto dto = kycFileService.uploadPdf(userId, file);
+        return ResponseEntity.status(HttpStatus.CREATED).body(dto);
+    }
+
+
+
+    /*@PostMapping("/{userId}/assign")
     public ResponseEntity<KYCFileOutputDto> createKYCFile(@PathVariable("userId") Long userId, @RequestBody KYCFileInputDto input){
 
         // Haal User op
@@ -39,18 +52,9 @@ public class KYCFileController {
 
         KYCFileOutputDto output = KYCFileMapper.toOutputDto(saved);
         return ResponseEntity.status(HttpStatus.CREATED).body(output);
-    }
-
-    /*@PostMapping
-    public ResponseEntity<KYCFileOutputDto> createKYCFile(@RequestBody KYCFileInputDto input){
-
-        KYCFile toSave = KYCFileMapper.toEntity(input);
-
-        KYCFile saved = kycFileService.save(toSave);
-
-        KYCFileOutputDto output = KYCFileMapper.toOutputDto(saved);
-        return ResponseEntity.status(HttpStatus.CREATED).body(output);
     }*/
+
+
 
     @GetMapping("/{id}")
     public ResponseEntity<KYCFileOutputDto> getKYCFileById(@PathVariable Long id){

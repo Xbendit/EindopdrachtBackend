@@ -4,7 +4,9 @@ import com.ben.Backend_eindopdracht.dtos.KYCFileOutputDto;
 import com.ben.Backend_eindopdracht.exceptions.RecordNotFoundException;
 import com.ben.Backend_eindopdracht.mappers.KYCFileMapper;
 import com.ben.Backend_eindopdracht.models.KYCFile;
+import com.ben.Backend_eindopdracht.models.User;
 import com.ben.Backend_eindopdracht.repositories.KYCFileRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -36,11 +38,27 @@ public class KYCFileService {
 
     }
 
-    public String deleteKYCFile(long id) {
+    /*public String deleteKYCFile(long id) {
         if(!kycFileRepository.existsById(id)){
             throw new RecordNotFoundException("KYCFile " + id + " not found!");
         }
         kycFileRepository.deleteById(id);
-        return "User "+ id + " succesfully deleted";
+        return "KYC File "+ id + " succesfully deleted";
+    }*/
+    @Transactional
+    public String deleteKYCFile(long id) {
+        KYCFile file = kycFileRepository.findById(id)
+                .orElseThrow(() -> new RecordNotFoundException("KYCFile " + id + " not found!"));
+
+        User user = file.getUsers();
+        file.setUsers(null);
+        if (user != null && user.getKycFile() == file) {
+            user.setKycFile(null);
+        }
+
+        kycFileRepository.delete(file);
+        return "KYC File " + id + " succesfully deleted";
     }
+
+
 }

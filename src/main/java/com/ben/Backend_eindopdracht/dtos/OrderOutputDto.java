@@ -18,5 +18,4 @@ public class OrderOutputDto {
     private String cryptoCurrency;
     private LocalDateTime timestamp;
     private String status;
-    // private Long userID;
 }

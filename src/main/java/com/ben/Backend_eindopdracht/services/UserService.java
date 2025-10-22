@@ -37,7 +37,7 @@ public class UserService implements UserDetailsService {
     public List<User> findAll() {
         return userRepository.findAll();
     }
-    public User getUser (Long id) {
+    public User getUser(Long id) {
         return this.userRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("User " + id + " not found"));
     }
 

@@ -1,15 +1,15 @@
 package com.ben.Backend_eindopdracht.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="kycfile")
 @Entity
+@Getter
+@Setter
 
 // public enum DocumentStatus {
    // PENDING,
@@ -33,6 +33,7 @@ public class KYCFile {
     @OneToOne(optional = false)
     @JoinColumn(name = "user_id", referencedColumnName = "id",nullable = false)
     private User users;
+
 
     //@ManyToOne
     //@JoinColumn(name = "user_id", nullable = false)

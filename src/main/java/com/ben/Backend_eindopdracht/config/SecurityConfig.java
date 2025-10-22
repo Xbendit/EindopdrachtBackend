@@ -38,7 +38,6 @@ public class SecurityConfig {
 
         http
 
-
                 .httpBasic(b -> b.disable()) // zet Basic uit als je JWT gaat gebruiken
                 .authorizeHttpRequests(auth -> auth
                         // ─── Publiek (geen auth)
@@ -47,49 +46,66 @@ public class SecurityConfig {
                                 "/actuator/health", "/actuator/info",
                                 "/login"              // jouw login endpoint (JWT)
                         ).permitAll()
-                        .requestMatchers(HttpMethod.POST, "/login").permitAll()
-                        // registratie nieuwe user:
+
+                        // registration
                         .requestMatchers(HttpMethod.POST, "/users").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/auth").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/login").permitAll()
+
+                        //view registration
+                        .requestMatchers(HttpMethod.GET, "/auth").hasRole("ADMIN")
 
                         // ─── Users
-                        .requestMatchers(HttpMethod.GET, "/users/**").permitAll()
-                        /*.hasAnyRole("ADMIN", "COMPLIANCE_OFFICER")*/
-
+                        //Only admin can view all users
+                        .requestMatchers(HttpMethod.GET, "/users/**")
+                        .hasAnyRole("ADMIN")
+                        //Only admin can update all users
                         .requestMatchers(HttpMethod.PUT, "/users/**").hasRole("ADMIN")
+                        //Only admin can delete all users
                         .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
 
                         // ─── SecurityRoles (toegangsbeheer)
-                        /*.requestMatchers("/securityroles/**").hasRole("ADMIN")*/
-                        .requestMatchers("/securityroles/**").permitAll()
+                        // Only admin can create and update  securityroles
+                        .requestMatchers("/securityroles/**").hasRole("ADMIN")
 
 
                         // ─── KYC (inzage/valideren)
-                        .requestMatchers("/kycfiles/**")
-                        .hasAnyRole("COMPLIANCE_OFFICER", "ADMIN")
+                        // All can upload KYC documents
+                        .requestMatchers(HttpMethod.POST, "/kycfiles").permitAll()
+                        // Only CO can view all kyc requests
+                        .requestMatchers(HttpMethod.GET, "/kycfiles/**").hasRole("COMPLIANCE_OFFICER")
+                        // Only CO can update status and kyc request
+                        .requestMatchers(HttpMethod.PUT, "/kycfiles/**").hasRole("COMPLIANCE_OFFICER")
+                        // Admin and CO can delete kyc requests
+                        .requestMatchers(HttpMethod.DELETE, "/kycfiles/**").hasAnyRole("COMPLIANCE_OFFICER", "ADMIN" )
+
 
                         // ─── Wallets
-                        // Traders en Admins mogen wallets aanmaken/bewerken/verwijderen
+                        // Traders en Admins can create wallets
                         .requestMatchers(HttpMethod.POST,   "/wallets/**")
                         .hasAnyRole("TRADER","ADMIN")
+                        // Admins can update wallets
                         .requestMatchers(HttpMethod.PUT,    "/wallets/**")
-                        .hasAnyRole("TRADER","ADMIN")
+                        .hasRole("ADMIN")
+                        // Traders en Admins can delete wallets
                         .requestMatchers(HttpMethod.DELETE, "/wallets/**")
-                        .hasAnyRole("TRADER","ADMIN")
-                        // Inzage in wallets: ook CO
+                        .hasAnyRole("ADMIN","TRADER")
+                        // Admins can view all
                         .requestMatchers(HttpMethod.GET,    "/wallets/**")
-                        .hasAnyRole("TRADER","COMPLIANCE_OFFICER","ADMIN")
+                        .hasRole("ADMIN")
 
                         // ─── Orders
-                        // Traders en Admins mogen orders beheren; inzage ook voor CO
+                        // Traders en Admins can create orders
                         .requestMatchers(HttpMethod.POST,   "/orders/**")
                         .hasAnyRole("TRADER","ADMIN")
+                        // Admins can update orders
                         .requestMatchers(HttpMethod.PUT,    "/orders/**")
-                        .hasAnyRole("TRADER","ADMIN")
+                        .hasRole("ADMIN")
+                        // Admins can delete orders
                         .requestMatchers(HttpMethod.DELETE, "/orders/**")
-                        .hasAnyRole("TRADER","ADMIN")
+                        .hasAnyRole("ADMIN","TRADER")
+                        // Admins can view all orders
                         .requestMatchers(HttpMethod.GET,    "/orders/**")
-                        .hasAnyRole("TRADER","COMPLIANCE_OFFICER","ADMIN")
+                        .hasRole("ADMIN")
 
                         // ─── Overig: ingelogd
                         .anyRequest().authenticated()

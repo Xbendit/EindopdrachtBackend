@@ -7,7 +7,11 @@ import com.ben.Backend_eindopdracht.mappers.WalletMapper;
 import com.ben.Backend_eindopdracht.models.Wallet;
 import com.ben.Backend_eindopdracht.repositories.UserRepository;
 import com.ben.Backend_eindopdracht.repositories.WalletRepository;
+import jakarta.transaction.Transactional;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -44,9 +48,25 @@ public class WalletService {
 
     }
 
+    @Transactional
     public String deleteWallet(Long id) {
-        Wallet wallet = walletRepository.findById(id).orElseThrow(()-> new RecordNotFoundException("Wallet "+ id+ " not found"));
-        walletRepository.deleteById(id);
-        return "Wallet "+ id + " successfully deleted";
+        Wallet w = walletRepository.findById(id)
+                .orElseThrow(() -> new RecordNotFoundException("Wallet " + id + " not found"));
+
+
+        if (w.getOrders() != null && !w.getOrders().isEmpty()) {
+            throw new RecordNotFoundException("Wallet " + id + " heeft nog orders. Verwijder/annuleer die eerst.");
+        }
+
+
+        if (w.getUsers() != null && w.getUsers().getWallets() != null) {
+            w.getUsers().getWallets().remove(w);
+        }
+
+        walletRepository.delete(w); // delete(entity) i.p.v. deleteById
+        return "Wallet " + id + " successfully deleted";
     }
+
+
 }
+

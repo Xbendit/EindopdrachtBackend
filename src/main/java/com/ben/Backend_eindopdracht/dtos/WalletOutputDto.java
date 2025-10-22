@@ -15,5 +15,4 @@ public class WalletOutputDto {
     private String walletAdress;
     private String cryptoCurrency;
     private Long balance;
-    // private Long userId;
 }

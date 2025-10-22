@@ -1,9 +1,7 @@
 package com.ben.Backend_eindopdracht.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -12,6 +10,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Table(name = "orders")
 @Entity
+@Getter
+@Setter
 
 public class Order {
     @Id

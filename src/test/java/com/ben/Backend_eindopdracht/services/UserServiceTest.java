@@ -48,7 +48,6 @@ class UserServiceTest {
         existingUser.setUsername("alice");
         existingUser.setEmail("alice@example.com");
         existingUser.setPassword("plain"); // wordt ge-encode bij save(...)
-        // security roles
         List<SecurityRole> roles = new ArrayList<>();
         roles.add(new SecurityRole(10L,"ROLE_ADMIN", existingUser)); // jouw service gebruikt role.getRole() direct
         roles.add(new SecurityRole(11L,"ROLE_TRADER", existingUser ));

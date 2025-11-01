@@ -2,8 +2,6 @@ package com.ben.Backend_eindopdracht.models;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.repository.cdi.Eager;
-
 import java.util.List;
 
 @Data
@@ -23,8 +21,6 @@ public class User {
     private String email;
     @Column(nullable = false)
     private String password;
-    /*@Column(nullable = false)
-    private String role;*/
 
     @OneToOne(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
         private KYCFile kycFile;

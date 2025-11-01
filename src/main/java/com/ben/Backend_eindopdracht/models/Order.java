@@ -2,7 +2,6 @@ package com.ben.Backend_eindopdracht.models;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDateTime;
 
 @Data
@@ -29,8 +28,6 @@ public class Order {
     private LocalDateTime timestamp;
     @Column(nullable = false)
     private String status;
-    // @Column(nullable = false)
-    // private Long userID;
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User users;

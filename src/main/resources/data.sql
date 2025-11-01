@@ -1,11 +1,11 @@
--- Maak eerst Users
+-- Users
 INSERT INTO users (username, email, password)
 VALUES
     ('alice', 'alice@example.com', '$2a$10$5dcsUKzwg0EecyR1C3XIv.Vn30.W.P86fTQm0lG0FXPru7wz7w1Pe'),
     ('bob', 'bob@example.com', '$2a$10$.Xpj2mGy/EbTPBc.jMAENO4D0Qg9BqAy6/xzBAEnPrQSHNOn1HpRq'),
     ('charlie', 'charlie@example.com', '$2a$10$Qfq4UbzW45dFDQitYmVhw.de6doth82qrYiFGaRwtqxbf/.Hbco4y');
 
--- Security Roles
+-- Security Roles (gekoppeld aan users)
 INSERT INTO securityroles (role, user_id)
 VALUES
     ( 'TRADER', 1),
@@ -29,6 +29,6 @@ VALUES
 -- KYC Files (gekoppeld aan users)
 INSERT INTO kycfile (file_name, file_path, file_status, user_id, file_size_bytes)
 VALUES
-    ('alice_id.pdf', '/files/alice_id.pdf', 'APPROVED', 1,12345),
-    ('bob_passport.pdf', '/files/bob_passport.pdf', 'PENDING', 2,23456),
-    ('charlie_id.pdf', '/files/charlie_id.pdf', 'REJECTED', 3,34567);
+    ('alice_id.pdf', 'kyc-uploads/user-1/alice_id.pdf', 'APPROVED', 1,12345),
+    ('bob_passport.pdf', 'kyc-uploads/user-2/bob_passport.pdf', 'PENDING', 2,23456),
+    ('charlie_id.pdf', 'kyc-uploads/user-3/charlie_id.pdf', 'REJECTED', 3,34567);

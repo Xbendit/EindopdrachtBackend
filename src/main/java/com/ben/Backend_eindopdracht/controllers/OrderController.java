@@ -3,10 +3,8 @@ package com.ben.Backend_eindopdracht.controllers;
 
 import com.ben.Backend_eindopdracht.dtos.OrderInputDto;
 import com.ben.Backend_eindopdracht.dtos.OrderOutputDto;
-import com.ben.Backend_eindopdracht.dtos.UserOutputDto;
 import com.ben.Backend_eindopdracht.exceptions.RecordNotFoundException;
 import com.ben.Backend_eindopdracht.mappers.OrderMapper;
-import com.ben.Backend_eindopdracht.mappers.WalletMapper;
 import com.ben.Backend_eindopdracht.models.Order;
 import com.ben.Backend_eindopdracht.models.User;
 import com.ben.Backend_eindopdracht.models.Wallet;
@@ -40,8 +38,6 @@ public class OrderController {
         Wallet wallet = walletRepository.findById(walletId).orElseThrow(()-> new RecordNotFoundException("Wallet not found"));
 
         //DTO > Entity
-        //Order toSave = OrderMapper.toEntity(input);
-
         Order order = OrderMapper.toEntity(input);
         //Koppel User
         order.setUsers(user);

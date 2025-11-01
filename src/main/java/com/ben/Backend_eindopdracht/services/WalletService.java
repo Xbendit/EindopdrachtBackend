@@ -8,10 +8,8 @@ import com.ben.Backend_eindopdracht.models.Wallet;
 import com.ben.Backend_eindopdracht.repositories.UserRepository;
 import com.ben.Backend_eindopdracht.repositories.WalletRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
+
 
 import java.util.List;
 
@@ -41,9 +39,7 @@ public class WalletService {
         wallet.setWalletAdress(walletOutputDto.getWalletAdress());
         wallet.setBalance(walletOutputDto.getBalance());
         wallet.setCryptoCurrency(walletOutputDto.getCryptoCurrency());
-
         Wallet savedWallet = walletRepository.save(wallet);
-
         return WalletMapper.toOutputDto(savedWallet);
 
     }

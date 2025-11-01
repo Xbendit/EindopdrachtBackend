@@ -1,6 +1,5 @@
 package com.ben.Backend_eindopdracht.controllers;
 
-
 import com.ben.Backend_eindopdracht.dtos.UserLoginRequestDTO;
 import com.ben.Backend_eindopdracht.security.JwtService;
 import org.springframework.http.HttpHeaders;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
-
 
 @RestController
 public class LoginController {

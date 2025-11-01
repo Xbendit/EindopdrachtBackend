@@ -13,12 +13,9 @@ public class KYCFileOutputDto {
     private Long id;
     private String fileName;
     private String filePath;
-
-
-    /*-*/
     private long fileSize;
     private KYCFile.KycFileStatus fileStatus;
     private Long userId;
-    /*-*/
+
 
 }

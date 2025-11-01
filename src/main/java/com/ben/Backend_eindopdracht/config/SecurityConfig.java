@@ -1,6 +1,5 @@
 package com.ben.Backend_eindopdracht.config;
 
-
 import com.ben.Backend_eindopdracht.security.JwtRequestFilter;
 import com.ben.Backend_eindopdracht.security.JwtService;
 import com.ben.Backend_eindopdracht.services.UserService;
@@ -9,12 +8,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -64,17 +61,21 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
 
                         // ─── SecurityRoles (toegangsbeheer)
-                        // Only admin can create and update  securityroles
-                        .requestMatchers("/securityroles/**").hasRole("ADMIN")
+                        // Admin and CO can create and update  securityroles
+                        .requestMatchers("/securityroles/**").hasAnyRole("COMPLIANCE_OFFICER","ADMIN")
 
 
                         // ─── KYC (inzage/valideren)
                         // All can upload KYC documents
                         .requestMatchers(HttpMethod.POST, "/kycfiles/*/upload").permitAll()
-                        // Only CO can view all kyc requests
+                        // Only CO can view kyc file by id
                         .requestMatchers(HttpMethod.GET, "/kycfiles/**").hasRole("COMPLIANCE_OFFICER")
-                        // Only CO can update status and kyc request
-                        .requestMatchers(HttpMethod.PUT, "/kycfiles/**").hasRole("COMPLIANCE_OFFICER")
+                        // Only CO can download the kyc file
+                        .requestMatchers(HttpMethod.GET, "/kycfiles/*", "/kycfiles/*/download").hasRole("COMPLIANCE_OFFICER")
+                        // Only CO can update status of kyc fle
+                        .requestMatchers(HttpMethod.PUT, "/kycfiles/*/status").hasRole("COMPLIANCE_OFFICER")
+                        // Only CO can update kyc fle
+                        .requestMatchers(HttpMethod.PUT, "/kycfiles/*/replace").hasRole("COMPLIANCE_OFFICER")
                         // Admin and CO can delete kyc requests
                         .requestMatchers(HttpMethod.DELETE, "/kycfiles/**").hasAnyRole("COMPLIANCE_OFFICER", "ADMIN" )
 
@@ -115,7 +116,6 @@ public class SecurityConfig {
                 .cors(cors -> {
                 })
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-
         ;
 
         return http.build();

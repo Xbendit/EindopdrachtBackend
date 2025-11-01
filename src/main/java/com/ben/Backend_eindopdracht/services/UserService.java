@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-///  Added implements...
 @Service
 public class UserService implements UserDetailsService {
 
@@ -37,7 +36,7 @@ public class UserService implements UserDetailsService {
     public List<User> findAll() {
         return userRepository.findAll();
     }
-    public User getUser (Long id) {
+    public User getUser(Long id) {
         return this.userRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("User " + id + " not found"));
     }
 
@@ -45,7 +44,6 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("User " + id + " not found"));
         user.setUsername(userOutputDto.getUsername());
         user.setEmail(userOutputDto.getEmail());
-        /*user.setRole(userOutputDto.getRole());*/
 
         User savedUser = userRepository.save(user);
 
@@ -59,7 +57,7 @@ public class UserService implements UserDetailsService {
         userRepository.deleteById(id);
         return "User "+ id + " successfully deleted";
     }
-    /// /// Added
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)

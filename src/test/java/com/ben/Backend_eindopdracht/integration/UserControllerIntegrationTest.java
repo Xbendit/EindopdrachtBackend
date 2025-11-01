@@ -92,6 +92,7 @@ class UserControllerIntegrationTest {
 
     @Test
     @DisplayName("GET /users — calls for all users")
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     void getAllUsers() throws Exception {
         createUserAndReturnId("alice", "alice@example.com");
 
@@ -104,6 +105,7 @@ class UserControllerIntegrationTest {
 
     @Test
     @DisplayName("GET /users/{id} — get user by id (200)")
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     void getUserById() throws Exception {
         Long id = createUserAndReturnId("bob", "bob@example.com");
 

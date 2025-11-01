@@ -3,16 +3,12 @@ package com.ben.Backend_eindopdracht.mappers;
 
 import com.ben.Backend_eindopdracht.dtos.OrderInputDto;
 import com.ben.Backend_eindopdracht.dtos.OrderOutputDto;
-
 import com.ben.Backend_eindopdracht.models.Order;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 public class OrderMapper {
 
-    // van OrderinputDTO naar OrderEntity
     public static Order toEntity (OrderInputDto dto){
         Order o = new Order();
         o.setOrderType(dto.getOrderType());

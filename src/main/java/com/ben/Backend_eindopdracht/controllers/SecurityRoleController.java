@@ -2,7 +2,6 @@ package com.ben.Backend_eindopdracht.controllers;
 
 import com.ben.Backend_eindopdracht.dtos.SecurityRoleInputDto;
 import com.ben.Backend_eindopdracht.dtos.SecurityRoleOutputDto;
-import com.ben.Backend_eindopdracht.dtos.UserInputDto;
 import com.ben.Backend_eindopdracht.exceptions.RecordNotFoundException;
 import com.ben.Backend_eindopdracht.mappers.SecurityRoleMapper;
 import com.ben.Backend_eindopdracht.models.SecurityRole;
@@ -25,10 +24,9 @@ public class SecurityRoleController {
     @PostMapping("/{userId}/assign")
     public ResponseEntity<SecurityRoleOutputDto> createrole(@PathVariable("userId") Long userId, @RequestBody SecurityRoleInputDto input){
 
-        // Haal User op
+
         User user = userRepository.findById(userId).orElseThrow(()-> new RecordNotFoundException("User not found"));
 
-        //SecurityRole toSave = SecurityRoleMapper.toEntity(input);
         SecurityRole securityRole = SecurityRoleMapper.toEntity(input);
 
         securityRole.setUsers(user);

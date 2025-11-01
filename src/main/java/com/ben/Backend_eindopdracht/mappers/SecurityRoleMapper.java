@@ -6,7 +6,6 @@ import com.ben.Backend_eindopdracht.models.SecurityRole;
 
 public class SecurityRoleMapper {
 
-// van entity naar OutputDTO
     public static SecurityRoleOutputDto toOutputDto(SecurityRole securityRole) {
         var r = new SecurityRoleOutputDto();
         r.setId(securityRole.getId());
@@ -14,13 +13,10 @@ public class SecurityRoleMapper {
         return r;
     }
 
-
-    // van SecurityRoleInputDTO naar Entity
     public static SecurityRole toEntity(SecurityRoleInputDto dto) {
         SecurityRole s = new SecurityRole();
         s.setRole(dto.getRole());
         return s;
     }
-
 
 }

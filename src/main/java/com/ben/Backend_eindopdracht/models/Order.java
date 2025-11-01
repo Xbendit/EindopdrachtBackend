@@ -1,10 +1,7 @@
 package com.ben.Backend_eindopdracht.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
+import lombok.*;
 import java.time.LocalDateTime;
 
 @Data
@@ -12,6 +9,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Table(name = "orders")
 @Entity
+@Getter
+@Setter
 
 public class Order {
     @Id
@@ -29,8 +28,6 @@ public class Order {
     private LocalDateTime timestamp;
     @Column(nullable = false)
     private String status;
-    // @Column(nullable = false)
-    // private Long userID;
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User users;

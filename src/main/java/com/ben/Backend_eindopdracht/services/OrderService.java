@@ -5,10 +5,7 @@ import com.ben.Backend_eindopdracht.exceptions.RecordNotFoundException;
 import com.ben.Backend_eindopdracht.mappers.OrderMapper;
 import com.ben.Backend_eindopdracht.models.Order;
 import com.ben.Backend_eindopdracht.repositories.OrderRepository;
-import com.ben.Backend_eindopdracht.repositories.UserRepository;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service

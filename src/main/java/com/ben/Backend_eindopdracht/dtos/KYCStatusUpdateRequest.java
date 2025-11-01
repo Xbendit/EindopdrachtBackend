@@ -8,9 +8,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class KYCFileInputDto {
-
-    private String fileName;
-    private String filePath;
-    private KYCFile.KycFileStatus fileStatus;
+public class KYCStatusUpdateRequest {
+    private KYCFile.KycFileStatus status;
+    public KYCFile.KycFileStatus getStatus() { return status; }
+    public void setStatus(KYCFile.KycFileStatus status) { this.status = status; }
 }

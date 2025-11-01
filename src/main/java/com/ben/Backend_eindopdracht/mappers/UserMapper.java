@@ -6,7 +6,6 @@ import com.ben.Backend_eindopdracht.models.User;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 public class UserMapper {
 
     //van user naar OutputDto
@@ -15,7 +14,6 @@ public class UserMapper {
     o.setId(user.getId());
     o.setUsername(user.getUsername());
     o.setEmail(user.getEmail());
-    /*o.setRole(user.getRole());*/
     return o;
 }
     // list maken
@@ -30,7 +28,6 @@ public class UserMapper {
         u.setUsername(dto.getUsername());
         u.setEmail(dto.getEmail());
         u.setPassword(dto.getPassword());
-        /*u.setRole(dto.getRole());*/
         return u;
     }
 }

@@ -1,11 +1,10 @@
 package com.ben.Backend_eindopdracht.controllers;
 
 
-import com.ben.Backend_eindopdracht.dtos.UserOutputDto;
+
 import com.ben.Backend_eindopdracht.dtos.WalletInputDto;
 import com.ben.Backend_eindopdracht.dtos.WalletOutputDto;
 import com.ben.Backend_eindopdracht.exceptions.RecordNotFoundException;
-import com.ben.Backend_eindopdracht.mappers.UserMapper;
 import com.ben.Backend_eindopdracht.mappers.WalletMapper;
 import com.ben.Backend_eindopdracht.models.User;
 import com.ben.Backend_eindopdracht.models.Wallet;
@@ -31,16 +30,11 @@ public class WalletController {
 
         // Haal User op
         User user = userRepository.findById(userId).orElseThrow(()-> new RecordNotFoundException("User not found"));
-
         // DTO > Entity
-        //Wallet toSave = WalletMapper.toEntity(input);
         Wallet wallet = WalletMapper.toEntity(input);
         //Koppel User
         wallet.setUsers(user);
-
-
         // Opslaan in database
-        //Wallet saved = walletService.save(toSave);
         Wallet saved = walletService.save(wallet);
 
         // Entity > Output DTO

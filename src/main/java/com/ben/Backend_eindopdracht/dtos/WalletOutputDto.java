@@ -1,7 +1,5 @@
 package com.ben.Backend_eindopdracht.dtos;
 
-
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,5 +13,4 @@ public class WalletOutputDto {
     private String walletAdress;
     private String cryptoCurrency;
     private Long balance;
-    // private Long userId;
 }

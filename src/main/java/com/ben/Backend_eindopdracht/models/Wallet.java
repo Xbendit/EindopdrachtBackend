@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.util.List;
 
 @Data
@@ -22,8 +21,6 @@ public class Wallet {
     private String cryptoCurrency;
     @Column(nullable = false)
     private Long balance;
-    // @Column(nullable = false)
-    // private Long userId;
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", referencedColumnName = "id",nullable = false)
     private User users;
